@@ -1,22 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
 import { board } from './Board.js';
-import { useState } from "react";
+import { useEffect,useState } from "react";
+import io from 'socket.io-client';
 
+const socket = io(); // Connects to socket connection
 
 export function App() {
-  const [board, setBoard] = useState(["NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL"]);
-  
-  function XO(space) {
-    setBoard( board[space]= 'X')
-  }
-  return (
-    <div className="Change">
-    
-    <FullBoard myFunctionProp={XO} />
-    
-    </div>
-  );
+ useEffect(() => {
+        socket.on('connect', (user) => {
+        console.log(user)
+      
+    });
+  }, []);
 }
+
 
 export default App;
