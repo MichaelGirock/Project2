@@ -5,44 +5,50 @@ import Box from './Box.js'
 import io from 'socket.io-client';
 
 const socket = io(); // Connects to socket connection
+let counter=0
+let move='X'
 
 function Board(props){
-    const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
-  
-    //  function onClickBox() {
-    //     console.log('TEST')
-    //     socket.emit('board', {board: board});
-    // }
-    
-     useEffect(() => {
-    // Listening for a chat event emitted by the server. If received, we
-    // run the code in the function that is passed in as the second arg
-    socket.on('board', (space) => {
-      console.log(space.space);
-      console.log(board)
-      const newBoard=board.slice()
-      newBoard[space.space]='X'
-      
-      setBoard(newBoard)
-      console.log(newBoard)
-      console.log(board)
-      
+    const [board, setBoard] = useState(['','','','','','','','','']);
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+        socket.on('board', (space) => {
+        console.log('CALLING MOVED USEEFFECT')
+        moved(space)
       
     });
   }, []);
     
-    function XO(space) {
+    
+    function moved(space) {
         const newBoard=board.slice()
-        newBoard[space]='X'
-        setBoard(newBoard)
-        //onClickBox()
-        console.log('TEST')
-        socket.emit('board', {space: space});
+          
+          
+        setCount(count=>{
+            setBoard(prevBoard =>{
+                let nBoard = prevBoard.slice()
+                nBoard[space.space] = (count % 2) ? 'O' : 'X'
+                return nBoard
+            })
+            return count+1
+        })
+        
+        console.log('Counter: ', count)
+        console.log('Board:', board)
+    }
+    
+    
+    
+    function XO(space) {
+        console.log('CALLING MOVED XO')
+        moved(space)
+        socket.emit('board', {space: space.space});
+    
     }
 
  
     const item = board.map((v, indx) => 
-        <Box className="box" mark={board[indx]} key={indx} onclick={() => XO(indx)}/>
+        <Box className="box" mark={board[indx]} key={indx} onclick={() => XO({space:indx})}/>
     )
     
 

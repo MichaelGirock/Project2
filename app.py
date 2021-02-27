@@ -39,9 +39,9 @@ def on_chat(data): # data is whatever arg you pass in your emit call on client
     socketio.emit('chat',  data, broadcast=True, include_self=False)
     
 @socketio.on('board')
-def on_move(moves):
-    print(str(moves))
-    socketio.emit('board',  moves, broadcast=True, include_self=False)
+def on_move(board):
+    print(str(board))
+    socketio.emit('board',  board, broadcast=True, include_self=False)
 
 # Note that we don't call app.run anymore. We call socketio.run with app arg
 socketio.run(
