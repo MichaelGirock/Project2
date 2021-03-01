@@ -20,14 +20,27 @@ def index(filename):
     return send_from_directory('./build', filename)
 
 # When a client connects from this Socket connection, this function is run
-@socketio.on('connect')
-def on_connect():
-    print('User connected!')
+userlist = []
+@socketio.on('login')
+def on_connect(user):
+    print(user, ' connected!')
+    userlist.append(user)
+    socketio.emit ('login', userlist, broadcast=True, include_self=True)
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
+    
+    
+@socketio.on('logout')
+def on_logout(user):
+    userlist.clear()
+    print (userlist)
+    print('User Logged out!')
+    socketio.emit ('login', userlist, broadcast=True, include_self=True)
+    
+        
 
 # When a client emits the event 'chat' to the server, this function is run
 # 'chat' is a custom event name that we just decided
@@ -47,5 +60,5 @@ def on_move(board):
 socketio.run(
     app,
     host=os.getenv('IP', '0.0.0.0'),
-    port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
+    port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8088)),
 )

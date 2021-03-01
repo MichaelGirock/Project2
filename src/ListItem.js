@@ -1,7 +1,7 @@
 import React from 'react';
 
 export function ListItem(props) {
-    return <li>
-        {props.name}
-    </li>
+    const {key, name} = props
+    
+    return <ul key={key}>{name}</ul>
 }
