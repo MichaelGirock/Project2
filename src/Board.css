@@ -9,3 +9,14 @@
 .box {
   border: 1px solid black; /* Shows the lines in the CSS grid */
 }
+
+table,
+td {
+    border: 1px solid #333;
+}
+
+thead,
+tfoot {
+    background-color: #333;
+    color: #fff;
+}

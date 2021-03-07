@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 
 const socket = io(); // Connects to socket connection
 
+var leaderClick=1
 
 export function Board(props){
     const [board, setBoard] = useState(['','','','','','','','','']);
@@ -64,6 +65,53 @@ export function Board(props){
         
     }
     
+    
+    function leaderBoard(){
+        console.log(leaderClick)
+        if (leaderClick == 0) {
+            console.log('0 toggle')
+            leaderClick=1
+            return (<button onClick={leaders}>
+                    Leader Board
+                    </button>
+                )
+        }else{
+                        console.log('1 toggle')
+
+            return (<button onClick={toggle()}>
+                Leader Board
+                </button>
+            )
+        }
+        
+    }
+    
+    function toggle(){
+        leaderClick=0
+        return(<button onClick={leaders}>
+                    Leader Board
+                    </button>
+    )
+    }
+    
+    function leaders(){
+        return (
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">The table header</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>The table body</td>
+                        <td>with two columns</td>
+                    </tr>
+                </tbody>
+            </table>
+            )
+    }
+    
     function endGame(){
         if (gameover && (props.currUser==props.userList[0] || props.currUser==props.userList[1])){
             return(<button onClick={playAgain}>
@@ -72,6 +120,7 @@ export function Board(props){
         }
         
     }
+    
     function playAgain(){
         //socket.emit('logout', props.currUser)
         setBoard(['','','','','','','','','']);
@@ -129,7 +178,13 @@ export function Board(props){
             {props.userList.slice(2).join(", ")}
             <br/>
             <br/>
+            {leaderBoard()}
+            <br/>
+            <br/>
             {endGame()}
+            <br/>
+            <br/>
+            {leaders()}
             </div>
 
     )

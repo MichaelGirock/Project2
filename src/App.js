@@ -14,6 +14,9 @@ function App(props) {
   const [currUser, setCurrUser] = useState("");
   const inputRef = useRef(null);
   
+  let button;
+  let input;
+  
   useEffect(() => {
         console.log('USE EFFECT IN EFFECT')
         socket.on('login', (userList) => {
@@ -39,11 +42,9 @@ function App(props) {
     setLogin(false);
   }
   
-  let button;
-  let input;
+  
 
   if (login) {
-    
 
   } else {
     input = <input type="text" ref={ inputRef } />
